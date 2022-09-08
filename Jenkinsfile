@@ -1,25 +1,13 @@
-pipeline {
-  agent any
-  tools {
-    maven 'maven'
-    jdk 'jdk'
-  }
-  stages {
-    stage('Build') {
-      steps {
-        sh 'mvn clean package'
-        sh 'file 61'
-      }
+node {
+  def maven = docker.image('maven:3.5.4-alpine')
+  stage('Build') {
+    maven.inside('-v /root/.m2:/root/.m2') {
+      sh 'mvn -B -DskipTests clean package'
     }
-    stage('Test') {
-      steps {
-        sh 'mvn test'
-      }
-      post {
-        always {
-          junit 'target/surefire-reports/*.xml'
-        }
-      }
+  }
+  stage('Test') {
+    maven.inside('-v /root/.m2:/root/.m2') {
+      sh 'mvn test'
     }
   }
 }
