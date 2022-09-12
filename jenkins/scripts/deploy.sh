@@ -14,9 +14,9 @@ set +x
 
 echo 'The following command upload java jar build asset to server'
 set -x
-scp -i $JENKINS_HOME/privateKey/aws target/${NAME}-${VERSION}.jar ec2-user@54.169.29.224:/home/ec2-user/app/my-app.jar
+scp -i $JENKINS_HOME/privateKey/aws target/${NAME}-${VERSION}.jar ${MY_AWS_SERVER_USER}@${MY_AWS_SERVER_HOST}:/home/${MY_AWS_SERVER_USER}/app/my-app.jar
 set +x
 
 echo 'The following command run java jar on server'
 set -x
-ssh -i $JENKINS_HOME/privateKey/aws ec2-user@54.169.29.224 "java -jar /home/ec2-user/app/my-app.jar"
+ssh -i $JENKINS_HOME/privateKey/aws ${MY_AWS_SERVER_USER}@${MY_AWS_SERVER_HOST} "java -jar /home/${MY_AWS_SERVER_USER}/app/my-app.jar"
